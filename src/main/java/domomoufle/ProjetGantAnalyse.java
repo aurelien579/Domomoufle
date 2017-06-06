@@ -45,7 +45,7 @@ public class ProjetGantAnalyse {
     public ProjetGantAnalyse() {
         final Console console = new Console();
         console.log("DEBUT du programme TestArduino !..");
-        port = "COM8";
+        port = "COM5";
 
         try {
             //Enregistrement de la classe du driver par le driverManager
