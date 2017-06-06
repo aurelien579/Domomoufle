@@ -6,14 +6,14 @@ import javax.swing.JOptionPane;
 public class NewActionDialog extends javax.swing.JDialog {
 
     private static final Action[] defaultActions = {
-        new Action("Jouer vidéo du geste vers le haut aucun doigt plié", "java PlayVideo vert_deplie.mp4"),
-        new Action("Jouer vidéo du geste vers le haut index plié", "java PlayVideo vert_index_plie.mp4"),
-        new Action("Jouer vidéo du geste vers le haut majeur plié", "java PlayVideo vert_index_deplie.mp4"),
-        new Action("Jouer vidéo du geste vers le haut index et majeur pliés", "java PlayVideo vert_plie.mp4"),
-        new Action("Jouer vidéo du geste vers le bas aucun doigt plié", "java PlayVideo horiz_plie.mp4"),
-        new Action("Jouer vidéo du geste vers le bas index plié", "java PlayVideo horiz_index_plie.mp4"),
-        new Action("Jouer vidéo du geste vers le bas majeur plié", "java PlayVideo horiz_index_deplie.mp4"),
-        new Action("Jouer vidéo du geste vers le bas index et majeur pliés", "java PlayVideo horiz_deplie.mp4"),};
+        new Action("Jouer vidéo du geste vers le haut aucun doigt plié", "java PlayVideo videos/vert_deplie.mp4"),
+        new Action("Jouer vidéo du geste vers le haut index plié", "java PlayVideo videos/vert_index_plie.mp4"),
+        new Action("Jouer vidéo du geste vers le haut majeur plié", "java PlayVideo videos/vert_index_deplie.mp4"),
+        new Action("Jouer vidéo du geste vers le haut index et majeur pliés", "java PlayVideo videos/vert_plie.mp4"),
+        new Action("Jouer vidéo du geste vers la gauche aucun doigt plié", "java PlayVideo videos/horiz_plie.mp4"),
+        new Action("Jouer vidéo du geste vers la gauche index plié", "java PlayVideo horiz_videos/index_plie.mp4"),
+        new Action("Jouer vidéo du geste vers la gauche majeur plié", "java PlayVideo videos/horiz_index_deplie.mp4"),
+        new Action("Jouer vidéo du geste vers la gauche index et majeur pliés", "java PlayVideo videos/horiz_deplie.mp4"),};
 
     private boolean valid = false;
 
