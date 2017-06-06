@@ -219,7 +219,7 @@ public class ProjetGantAnalyse {
             if (addingModeles) {
                 insertModele(tuple, 8);
             } else {
-                System.out.println("Geste effectue : "+analyseTuple(tuple));
+                actionnement(analyseTuple(tuple));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -333,6 +333,7 @@ public class ProjetGantAnalyse {
 
     public void actionnement(int idGeste) {
         try {
+            System.out.println("Geste effectue : " + idGeste);
             getActionStmt.setInt(1, idGeste);
             ResultSet r = getActionStmt.executeQuery();
             r.next();
