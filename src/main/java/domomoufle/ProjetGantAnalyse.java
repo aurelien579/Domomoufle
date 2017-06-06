@@ -37,13 +37,15 @@ public class ProjetGantAnalyse {
     private PreparedStatement insertModeleStmt = null;
     private int acquisitionId = 0;
     private String port;
+    
+    private ArrayList<Double[]> valeurs = new ArrayList();
 
     public boolean addingModeles = false;
 
     public ProjetGantAnalyse() {
         final Console console = new Console();
         console.log("DEBUT du programme TestArduino !..");
-        port = "COM3";
+        port = "COM8";
 
         try {
             //Enregistrement de la classe du driver par le driverManager
@@ -93,7 +95,7 @@ public class ProjetGantAnalyse {
         try {
 
             final ArduinoUsbChannel vcpChannel = new ArduinoUsbChannel(port);
-
+            vcpChannel.open();
             BufferedReader vcpInput = new BufferedReader(new InputStreamReader(vcpChannel.getReader()));
 
             String line;
@@ -114,7 +116,6 @@ public class ProjetGantAnalyse {
                 ex.printStackTrace(System.err);
             }
 
-            vcpChannel.open();
 
             vcpChannel.close();
             closeAcquisition();
@@ -134,14 +135,22 @@ public class ProjetGantAnalyse {
             int flex1 = Integer.parseInt(tab[3]);
             int flex2 = Integer.parseInt(tab[4]);
             Date date = new Date();
-            mesuresStmt.setInt(1, acquisitionId);
-            mesuresStmt.setInt(2, flex1);
-            mesuresStmt.setInt(3, flex2);
-            mesuresStmt.setDouble(4, vitx);
-            mesuresStmt.setDouble(5, vity);
-            mesuresStmt.setDouble(6, vitz);
-            mesuresStmt.setTimestamp(7, new Timestamp(date.getTime()));
-            mesuresStmt.executeUpdate();
+//            mesuresStmt.setInt(1, acquisitionId);
+//            mesuresStmt.setInt(2, flex1);
+//            mesuresStmt.setInt(3, flex2);
+//            mesuresStmt.setDouble(4, vitx);
+//            mesuresStmt.setDouble(5, vity);
+//            mesuresStmt.setDouble(6, vitz);
+//            mesuresStmt.setTimestamp(7, new Timestamp(date.getTime()));
+//            mesuresStmt.executeUpdate();
+
+            Double[] t = new Double[5];
+            t[0] = (vitx);
+            t[1] = (vity);
+            t[2] = (vitz);
+            t[3] = (double)(flex1);
+            t[4] = (double)(flex2);
+            valeurs.add(t);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
@@ -190,26 +199,27 @@ public class ProjetGantAnalyse {
 
     public void traitementAcquisition(int id) {
         try {
-            acqGetStmt.setInt(1, id);
-            ResultSet acq = acqGetStmt.executeQuery();
-            ArrayList<Double[]> t = new ArrayList<Double[]>();
+//            acqGetStmt.setInt(1, id);
+//            ResultSet acq = acqGetStmt.executeQuery();
+//            ArrayList<Double[]> t = new ArrayList<Double[]>();
+//
+//            while (acq.next()) {
+//                Double[] tab = new Double[5];
+//                tab[0] = acq.getDouble("vitesseX");
+//                tab[1] = acq.getDouble("vitesseY");
+//                tab[2] = acq.getDouble("vitesseZ");
+//                tab[3] = (double) acq.getInt("flex1");
+//                tab[4] = (double) acq.getInt("flex2");
+//                t.add(tab);
+//            }
 
-            while (acq.next()) {
-                Double[] tab = new Double[5];
-                tab[0] = acq.getDouble("vitesseX");
-                tab[1] = acq.getDouble("vitesseY");
-                tab[2] = acq.getDouble("vitesseZ");
-                tab[3] = (double) acq.getInt("flex1");
-                tab[4] = (double) acq.getInt("flex2");
-                t.add(tab);
-            }
-
-            ArrayList tuple = Formatage.createTuple(t);
+            ArrayList tuple = Formatage.createTuple(valeurs);
+            valeurs.clear();
 
             if (addingModeles) {
                 insertModele(tuple, 8);
             } else {
-                actionnement(analyseTuple(tuple));
+                System.out.println("Geste effectue : "+analyseTuple(tuple));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -266,7 +276,7 @@ public class ProjetGantAnalyse {
         System.out.println("Analyse du mouvement en cours ...");
         try {
             final Process process = Runtime.getRuntime().exec("cmd /c runKnime.bat");
-            Thread.sleep(10000);
+            process.waitFor();
 
             System.out.println("Analyse terminee !");
             BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("result.csv")));
@@ -342,6 +352,7 @@ public class ProjetGantAnalyse {
     }
 
     public static void main(String[] args) {
-        new ProjetGantAnalyse();
+        ProjetGantAnalyse p = new ProjetGantAnalyse();
+        p.listenArduino();
     }
 }

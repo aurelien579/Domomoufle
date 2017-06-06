@@ -24,12 +24,8 @@ public class Formatage {
         new Formatage("H:\\Analyse\\Accelerometer\\Shimmer01\\");
     }
 
-    public static ArrayList createTuple(ArrayList<Double[]> donnees) throws Exception {
+    public static ArrayList createTuple(ArrayList<Double[]> donnees) {
         int n = (donnees.size()-donnees.size()%30)/30;
-        if (n == 0) {
-            throw new Exception("Acquisition trop courte");
-        }
-        
         ArrayList<ArrayList<Double[]>> subgroup = new ArrayList<ArrayList<Double[]>>();
         for (int i = 0; i < 30; i++) {
             subgroup.add(new ArrayList<Double[]>(donnees.subList(i*n, (i+1)*n)));
@@ -43,9 +39,9 @@ public class Formatage {
     public static ArrayList traitementSubGroup(ArrayList<ArrayList<Double[]>> subgroup) {
         ArrayList tuple = new ArrayList();
         for (int i = 0; i < subgroup.size(); i++) {
-            tuple.add(variance(getDonnees(subgroup.get(i), 0)));
-            tuple.add(variance(getDonnees(subgroup.get(i), 1)));
-            tuple.add(variance(getDonnees(subgroup.get(i), 2)));
+            tuple.add(moyenne(getDonnees(subgroup.get(i), 0)));
+            tuple.add(moyenne(getDonnees(subgroup.get(i), 1)));
+            tuple.add(moyenne(getDonnees(subgroup.get(i), 2)));
             tuple.add((int)Math.round(moyenne(getDonnees(subgroup.get(i), 3))));
             tuple.add((int)Math.round(moyenne(getDonnees(subgroup.get(i), 4))));
         }
