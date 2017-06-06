@@ -2,6 +2,7 @@ package domomoufle;
 
 import domomoufle.database.Database;
 import domomoufle.gui.Frame;
+import domomoufle.gui.StartDialog;
 import java.awt.EventQueue;
 import javax.swing.UIManager;
 
@@ -19,11 +20,18 @@ public class GantGUI {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-
+        
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Frame().setVisible(true);
+                StartDialog dialog = new StartDialog(null, true);
+                dialog.setVisible(true);
+                if (dialog.getChoice() ==  StartDialog.START_ACQUISITION) {
+                    ProjetGantAnalyse p = new ProjetGantAnalyse();
+                    p.listenArduino();
+                } else if (dialog.getChoice() == StartDialog.START_MANAGE) {
+                    new Frame().setVisible(true);                    
+                }
             }
         });
     }
