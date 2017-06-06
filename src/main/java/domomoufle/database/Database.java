@@ -145,7 +145,7 @@ public class Database {
     
     public void deleteGeste(String geste) {
         try {
-            executeUpdate("DELETE FROM gestes WHERE nomGeste = ?;", geste);
+            executeUpdate("DELETE FROM modeles2 WHERE idGeste = (SELECT idGeste FROM gestes WHERE nomGeste = ?);", geste);
             executeUpdate("DELETE FROM gestes WHERE nomGeste = ?;", geste);
         } catch (MySQLIntegrityConstraintViolationException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);

@@ -79,8 +79,8 @@ public class ProjetGantAnalyse {
                     + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
                     + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
                     + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
-            getActionStmt = conn.prepareStatement("SELECT * FROM modeles, Action WHERE "
-                    + "Action.idAction = modeles.idAction AND modeles.idGeste = ?;");
+            getActionStmt = conn.prepareStatement("SELECT * FROM gestes, Action WHERE "
+                    + "Action.idAction = gestes.idAction AND gestes.idGeste = ?;");
         } catch (Exception ex) {
             ex.printStackTrace(System.err);
             System.exit(-1);
@@ -346,7 +346,7 @@ public class ProjetGantAnalyse {
     public static void playScript(String cmd) {
         try {
             System.out.println("Lancement du script : " + cmd);
-            Runtime.getRuntime().exec("cmd /c start " + cmd);
+            Runtime.getRuntime().exec(cmd);
         } catch (Exception e) {
             e.printStackTrace();
         }
