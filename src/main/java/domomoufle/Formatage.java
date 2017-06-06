@@ -20,10 +20,6 @@ public class Formatage {
         write(t);
     }
 
-    public static void main(String[] args) {
-        new Formatage("H:\\Analyse\\Accelerometer\\Shimmer01\\");
-    }
-
     public static ArrayList createTuple(ArrayList<Double[]> donnees) {
         int n = (donnees.size()-donnees.size()%30)/30;
         ArrayList<ArrayList<Double[]>> subgroup = new ArrayList<ArrayList<Double[]>>();

@@ -27,10 +27,8 @@ public class NewGesteDialog extends javax.swing.JDialog implements ArduinoReader
     private final AnimatedIcon[] loadingAnimatedIcons;
     private final ImageIcon validIcon;
     private int currentAcquisition;
-    private ArduinoReader reader;
     private final ArrayList<Mesure> currentAcquisitonValues;
     private final ProjetGantAnalyse projetGant;
-    private String port;
     private int gesteId;
     private boolean acquisitionsFinished = false;
 
@@ -62,12 +60,6 @@ public class NewGesteDialog extends javax.swing.JDialog implements ArduinoReader
 
         validButtons = new JButton[]{validButton1, validButton2, validButton3, validButton4, validButton5};
         restartButtons = new JButton[]{restartButton1, restartButton2, restartButton3, restartButton4, restartButton5};
-        
-        comboBoxPortCom.removeAllItems();
-        String[] portNames = SerialPortList.getPortNames();
-        for (String portName : portNames) {
-            comboBoxPortCom.addItem(portName);
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -97,8 +89,6 @@ public class NewGesteDialog extends javax.swing.JDialog implements ArduinoReader
         labelIcon3 = new javax.swing.JLabel();
         labelIcon4 = new javax.swing.JLabel();
         labelIcon5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        comboBoxPortCom = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nouveau geste");
@@ -203,10 +193,6 @@ public class NewGesteDialog extends javax.swing.JDialog implements ArduinoReader
             }
         });
 
-        jLabel6.setText("Port COM : ");
-
-        comboBoxPortCom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -260,27 +246,18 @@ public class NewGesteDialog extends javax.swing.JDialog implements ArduinoReader
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(validButton5))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nameLabel)
-                            .addComponent(jLabel6))
+                        .addComponent(nameLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(startButton)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(comboBoxPortCom, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(startButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(comboBoxPortCom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -343,6 +320,8 @@ public class NewGesteDialog extends javax.swing.JDialog implements ArduinoReader
             return;
         }
         
+        String port = GantGUI.getPort();
+        
         try {
             gesteId = GantGUI.getDatabase().insertGeste(name);
         } catch (MySQLIntegrityConstraintViolationException ex) {
@@ -351,23 +330,8 @@ public class NewGesteDialog extends javax.swing.JDialog implements ArduinoReader
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        port = (String) comboBoxPortCom.getSelectedItem();
 
-        try {
-            if (reader == null)
-                reader = new ArduinoReader(port);
-            else
-                reader.changePort(port);
-        } catch (IOException | SerialPortException ex) {
-            JOptionPane.showMessageDialog(this,
-                    "Impossible d'ouvrir le port : " + port,
-                    "Erreur",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        reader.addListener(this);
+        GantGUI.getReader().addListener(this);
 
         doAcquisition(0);
     }//GEN-LAST:event_startButtonActionPerformed
@@ -426,7 +390,7 @@ public class NewGesteDialog extends javax.swing.JDialog implements ArduinoReader
             restartButtons[i].setEnabled(false);
         }
 
-        reader.startReading();
+        GantGUI.getReader().startReading();
     }
 
     private void endAcquisition() {
@@ -434,7 +398,7 @@ public class NewGesteDialog extends javax.swing.JDialog implements ArduinoReader
         validButtons[currentAcquisition].setEnabled(true);
         restartButtons[currentAcquisition].setEnabled(true);
 
-        reader.stopReading();
+        GantGUI.getReader().stopReading();
     }
 
     private boolean sendAcquisition() {
@@ -464,13 +428,11 @@ public class NewGesteDialog extends javax.swing.JDialog implements ArduinoReader
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> comboBoxPortCom;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel labelIcon1;
     private javax.swing.JLabel labelIcon2;
     private javax.swing.JLabel labelIcon3;
@@ -519,10 +481,6 @@ public class NewGesteDialog extends javax.swing.JDialog implements ArduinoReader
 
     @Override
     public void windowClosing(WindowEvent e) {
-        if (reader != null) {
-            reader.close();
-        }
-
         if (!acquisitionsFinished) {
             if (gesteId > 0) {
                 GantGUI.getDatabase().deleteGeste(gesteId);

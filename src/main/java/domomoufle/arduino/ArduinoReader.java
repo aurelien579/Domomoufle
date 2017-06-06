@@ -2,8 +2,6 @@ package domomoufle.arduino;
 
 import fr.insalyon.p2i2.javaarduino.usb.ArduinoUsbChannel;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -92,8 +90,6 @@ public class ArduinoReader {
             running = true;
             String line;
             try {
-                System.out.println("reading...");
-
                 do {
                     line = input.readLine();
 

@@ -229,8 +229,4 @@ public class ProjetGant {
             e.printStackTrace();
         }
     }
-
-    public static void main(String[] args) {
-        new ProjetGant();
-    }
 }

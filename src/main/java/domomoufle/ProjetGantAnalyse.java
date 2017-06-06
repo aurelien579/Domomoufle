@@ -45,20 +45,15 @@ public class ProjetGantAnalyse {
     public ProjetGantAnalyse() {
         final Console console = new Console();
         console.log("DEBUT du programme TestArduino !..");
-        port = "COM5";
+        port = GantGUI.getPort();
 
         try {
-            //Enregistrement de la classe du driver par le driverManager
             Class.forName("com.mysql.jdbc.Driver");
             System.out.println("Driver trouvé...");
 
-            //Création d'une connexion sur la base de donnée
             conn = DriverManager.getConnection("jdbc:mysql://PC-TP-MYSQL.insa-lyon.fr:3306/G221_A_BD1", "G221_A", "G221_A");
-            //conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/p2i?zeroDateTimeBehavior=convertToNull", "root", "root");
-            //this.conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/" + bd, compte, motDePasse);
             System.out.println("Connexion etablie...");
 
-            // Prepared Statement
             mesuresStmt = conn.prepareStatement("INSERT INTO mesures (idAcquisition, flex1, flex2, vitesseX, vitesseY, vitesseZ, dateMesure)"
                     + " VALUES (?,?,?,?,?,?,?);");
             acquisitionStmt = conn.prepareStatement("INSERT INTO acquisitions (dateDebut) VALUES (?);", Statement.RETURN_GENERATED_KEYS);
@@ -350,10 +345,5 @@ public class ProjetGantAnalyse {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        ProjetGantAnalyse p = new ProjetGantAnalyse();
-        p.listenArduino();
     }
 }
