@@ -198,13 +198,13 @@ public class ProjetGantAnalyse {
             b.append(String.format(", x%d, y%d, z%d", i, i, i));
         }
         
-        b.append(") VALUES (?, ?");
+        b.append(", idGeste) VALUES (?, ?");
         
         for (int i = 0; i < 3*30; i++) {
             b.append(", ?");
         }
         
-        b.append(");");
+        b.append(", ?);");
 
         return b.toString();
     }
