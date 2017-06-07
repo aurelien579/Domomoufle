@@ -28,6 +28,22 @@ public class GantGUI {
         return reader;
     }
 
+    public static void diapo() {
+        try {
+            reader = new ArduinoReader(port);
+        } catch (IOException | SerialPortException ex) {
+            JOptionPane.showMessageDialog(null,
+                    "Impossible d'ouvrir le port : " + port,
+                    "Erreur",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        Diapo diapo = new Diapo();
+        reader.addListener(diapo);
+        reader.startReading();
+    }
+
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -57,6 +73,8 @@ public class GantGUI {
                     }
 
                     new Frame().setVisible(true);
+                } else if (dialog.getChoice() == StartDialog.START_DIAPO) {
+                    diapo();
                 }
             }
         });

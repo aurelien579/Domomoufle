@@ -31,6 +31,7 @@
                   <Component id="acquisitionButton" max="32767" attributes="0"/>
                   <Component id="manageButton" alignment="1" pref="256" max="32767" attributes="0"/>
                   <Component id="comboBoxPort" alignment="0" max="32767" attributes="0"/>
+                  <Component id="diapoButton" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -40,11 +41,13 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="comboBoxPort" pref="28" max="32767" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="comboBoxPort" min="-2" pref="28" max="-2" attributes="0"/>
+              <EmptySpace pref="12" max="32767" attributes="0"/>
               <Component id="manageButton" min="-2" pref="50" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="acquisitionButton" min="-2" pref="50" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="diapoButton" min="-2" pref="50" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -81,6 +84,14 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JButton" name="diapoButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Diapo"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="diapoButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

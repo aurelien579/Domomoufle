@@ -25,13 +25,8 @@ import jssc.SerialPortException;
 public class ProjetGantAnalyse {
 
     private Connection conn = null;
-    private PreparedStatement mesuresStmt = null;
     private PreparedStatement acquisitionStmt = null;
     private PreparedStatement closeAcqStmt = null;
-    private PreparedStatement acqGetStmt = null;
-    private PreparedStatement modeleGetStmt = null;
-    private PreparedStatement acqFlexGetStmt = null;
-    private PreparedStatement getModeleStmt = null;
     private PreparedStatement getDescriptionGesteStmt = null;
     private PreparedStatement getActionStmt = null;
     private PreparedStatement insertModeleStmt = null;
@@ -54,26 +49,11 @@ public class ProjetGantAnalyse {
             conn = DriverManager.getConnection("jdbc:mysql://PC-TP-MYSQL.insa-lyon.fr:3306/G221_A_BD1", "G221_A", "G221_A");
             System.out.println("Connexion etablie...");
 
-            mesuresStmt = conn.prepareStatement("INSERT INTO mesures (idAcquisition, flex1, flex2, vitesseX, vitesseY, vitesseZ, dateMesure)"
-                    + " VALUES (?,?,?,?,?,?,?);");
             acquisitionStmt = conn.prepareStatement("INSERT INTO acquisitions (dateDebut) VALUES (?);", Statement.RETURN_GENERATED_KEYS);
             closeAcqStmt = conn.prepareStatement("UPDATE acquisitions SET dateFin=? WHERE idAcquisition=?;");
-            acqGetStmt = conn.prepareStatement("SELECT vitesseX, vitesseY, vitesseZ, flex1, flex2 FROM mesures WHERE idAcquisition = ?;");
-            acqFlexGetStmt = conn.prepareStatement("SELECT avg(flex1), avg(flex2) FROM mesures WHERE idAcquisition = ?;");
-            getModeleStmt = conn.prepareStatement("SELECT * FROM modeles2;");
             getDescriptionGesteStmt = conn.prepareStatement("SELECT descModele FROM modeles WHERE idGeste = ?");
-            insertModeleStmt = conn.prepareStatement("INSERT INTO modeles2 (x1, y1, z1, flex11, flex21, x2, y2, z2, flex12, flex22, x3, y3, z3, "
-                    + "flex13, flex23, x4, y4, z4, flex14, flex24, x5, y5, z5, flex15, flex25, x6, y6, z6, flex16, flex26, x7, y7, z7, flex17, "
-                    + "flex27, x8, y8, z8, flex18, flex28, x9, y9, z9, flex19, flex29, x10, y10, z10, flex110, flex210, x11, y11, z11, flex111, "
-                    + "flex211, x12, y12, z12, flex112, flex212, x13, y13, z13, flex113, flex213, x14, y14, z14, flex114, flex214, x15, y15, z15, "
-                    + "flex115, flex215, x16, y16, z16, flex116, flex216, x17, y17, z17, flex117, flex217, x18, y18, z18, flex118, flex218, x19, y19"
-                    + ", z19, flex119, flex219, x20, y20, z20, flex120, flex220, x21, y21, z21, flex121, flex221, x22, y22, z22, flex122, flex222, "
-                    + "x23, y23, z23, flex123, flex223, x24, y24, z24, flex124, flex224, x25, y25, z25, flex125, flex225, x26, y26, z26, flex126, "
-                    + "flex226, x27, y27, z27, flex127, flex227, x28, y28, z28, flex128, flex228, x29, y29, z29, flex129, flex229, x30, y30, z30, "
-                    + "flex130, flex230, idGeste) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-                    + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-                    + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-                    + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+            
+            insertModeleStmt = conn.prepareStatement(getInsertPreparedSQL());
             getActionStmt = conn.prepareStatement("SELECT * FROM gestes, Action WHERE "
                     + "Action.idAction = gestes.idAction AND gestes.idGeste = ?;");
         } catch (Exception ex) {
@@ -129,15 +109,6 @@ public class ProjetGantAnalyse {
             double vitz = Double.parseDouble(tab[2]);
             int flex1 = Integer.parseInt(tab[3]);
             int flex2 = Integer.parseInt(tab[4]);
-            Date date = new Date();
-//            mesuresStmt.setInt(1, acquisitionId);
-//            mesuresStmt.setInt(2, flex1);
-//            mesuresStmt.setInt(3, flex2);
-//            mesuresStmt.setDouble(4, vitx);
-//            mesuresStmt.setDouble(5, vity);
-//            mesuresStmt.setDouble(6, vitz);
-//            mesuresStmt.setTimestamp(7, new Timestamp(date.getTime()));
-//            mesuresStmt.executeUpdate();
 
             Double[] t = new Double[5];
             t[0] = (vitx);
@@ -194,20 +165,6 @@ public class ProjetGantAnalyse {
 
     public void traitementAcquisition(int id) {
         try {
-//            acqGetStmt.setInt(1, id);
-//            ResultSet acq = acqGetStmt.executeQuery();
-//            ArrayList<Double[]> t = new ArrayList<Double[]>();
-//
-//            while (acq.next()) {
-//                Double[] tab = new Double[5];
-//                tab[0] = acq.getDouble("vitesseX");
-//                tab[1] = acq.getDouble("vitesseY");
-//                tab[2] = acq.getDouble("vitesseZ");
-//                tab[3] = (double) acq.getInt("flex1");
-//                tab[4] = (double) acq.getInt("flex2");
-//                t.add(tab);
-//            }
-
             ArrayList tuple = Formatage.createTuple(valeurs);
             valeurs.clear();
 
@@ -241,29 +198,24 @@ public class ProjetGantAnalyse {
         }
     }
 
-    public static String getInsertInModeleRequest(ArrayList t, int geste) {
-        String s = "INSERT INTO `modeles2` (`x1`, `y1`, `z1`, `flex11`, `flex21`, `x2`, "
-                + "`y2`, `z2`, `flex12`, `flex22`, `x3`, `y3`, `z3`, `flex13`, `flex23`, `x4`,"
-                + "`y4`, `z4`, `flex14`, `flex24`, `x5`, `y5`, `z5`, `flex15`, `flex25`, `x6`, "
-                + "`y6`, `z6`, `flex16`, `flex26`, `x7`, `y7`, `z7`, `flex17`, `flex27`, `x8`, `y8`,"
-                + "`z8`, `flex18`, `flex28`, `x9`, `y9`, `z9`, `flex19`, `flex29`, `x10`, `y10`, `z10`"
-                + ", `flex110`, `flex210`, `x11`, `y11`, `z11`, `flex111`, `flex211`, `x12`, `y12`, `z12"
-                + "`, `flex112`, `flex212`, `x13`, `y13`, `z13`, `flex113`, `flex213`, `x14`, `y14`, `z14`"
-                + ", `flex114`, `flex214`, `x15`, `y15`, `z15`, `flex115`, `flex215`, `x16`, `y16`, `z16`, "
-                + "`flex116`, `flex216`, `x17`, `y17`, `z17`, `flex117`, `flex217`, `x18`, `y18`, `z18`, "
-                + "`flex118`, `flex218`, `x19`, `y19`, `z19`, `flex119`, `flex219`, `x20`, `y20`, `z20`, "
-                + "`flex120`, `flex220`, `x21`, `y21`, `z21`, `flex121`, `flex221`, `x22`, `y22`, `z22`, "
-                + "`flex122`, `flex222`, `x23`, `y23`, `z23`, `flex123`, `flex223`, `x24`, `y24`, `z24`, "
-                + "`flex124`, `flex224`, `x25`, `y25`, `z25`, `flex125`, `flex225`, `x26`, `y26`, `z26`, "
-                + "`flex126`, `flex226`, `x27`, `y27`, `z27`, `flex127`, `flex227`, `x28`, `y28`, `z28`, "
-                + "`flex128`, `flex228`, `x29`, `y29`, `z29`, `flex129`, `flex229`, `x30`, `y30`, `z30`, "
-                + "`flex130`, `flex230`, idGeste) VALUES (";
-        for (int i = 0; i < t.size() - 1; i++) {
-            s += t.get(i) + ", ";
+    public static String getInsertPreparedSQL() {
+        StringBuilder b = new StringBuilder();
+        
+        b.append("INSERT INTO modeles2 (flex1, flex2");
+        
+        for (int i = 1; i <= 30; i++) {
+            b.append(String.format(", x%d, y%d, z%d", i, i, i));
         }
-        s += t.get(t.size() - 1) + ", " + geste + ");";
+        
+        b.append(") VALUES (?, ?");
+        
+        for (int i = 0; i < 3*30; i++) {
+            b.append(", ?");
+        }
+        
+        b.append(");");
 
-        return s;
+        return b.toString();
     }
 
     public int analyseTuple(ArrayList tuple) {
