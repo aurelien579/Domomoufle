@@ -27,19 +27,21 @@ public class Formatage {
             subgroup.add(new ArrayList<Double[]>(donnees.subList(i*n, (i+1)*n)));
         }
 
-        ArrayList tuple = traitementSubGroup(subgroup);
+        ArrayList tuple = traitementSubGroup(subgroup, donnees);
         
         return tuple;
     }
     
-    public static ArrayList traitementSubGroup(ArrayList<ArrayList<Double[]>> subgroup) {
+    public static ArrayList traitementSubGroup(ArrayList<ArrayList<Double[]>> subgroup, ArrayList<Double[]> donnees) {
         ArrayList tuple = new ArrayList();
+        int flex1 = (moyenne(getDonnees(donnees, 3)) > 0.5) ? 1 : 0;
+        int flex2 = (moyenne(getDonnees(donnees, 4)) > 0.5) ? 1 : 0;
+        tuple.add(flex1);
+        tuple.add(flex2);
         for (int i = 0; i < subgroup.size(); i++) {
             tuple.add(moyenne(getDonnees(subgroup.get(i), 0)));
             tuple.add(moyenne(getDonnees(subgroup.get(i), 1)));
             tuple.add(moyenne(getDonnees(subgroup.get(i), 2)));
-            tuple.add((int)Math.round(moyenne(getDonnees(subgroup.get(i), 3))));
-            tuple.add((int)Math.round(moyenne(getDonnees(subgroup.get(i), 4))));
         }
         
         return tuple;

@@ -52,7 +52,6 @@ public class ProjetGantAnalyse {
             acquisitionStmt = conn.prepareStatement("INSERT INTO acquisitions (dateDebut) VALUES (?);", Statement.RETURN_GENERATED_KEYS);
             closeAcqStmt = conn.prepareStatement("UPDATE acquisitions SET dateFin=? WHERE idAcquisition=?;");
             getDescriptionGesteStmt = conn.prepareStatement("SELECT descModele FROM modeles WHERE idGeste = ?");
-            
             insertModeleStmt = conn.prepareStatement(getInsertPreparedSQL());
             getActionStmt = conn.prepareStatement("SELECT * FROM gestes, Action WHERE "
                     + "Action.idAction = gestes.idAction AND gestes.idGeste = ?;");
@@ -75,7 +74,6 @@ public class ProjetGantAnalyse {
 
             String line;
             try {
-
                 while ((line = vcpInput.readLine()) != null) {
                     System.out.println("Data from Arduino: " + line);
                     if ("NEW".equals(line)) {
@@ -90,7 +88,6 @@ public class ProjetGantAnalyse {
             } catch (Exception ex) {
                 ex.printStackTrace(System.err);
             }
-
 
             vcpChannel.close();
             closeAcquisition();
@@ -180,18 +177,12 @@ public class ProjetGantAnalyse {
 
     public void insertModele(ArrayList t, int geste) {
         try {
-            for (int i = 1; i < t.size() + 1; i++) {
+            insertModeleStmt.setInt(1, (int) t.get(0));
+            insertModeleStmt.setInt(2, (int) t.get(1));
+            for (int i = 3; i < t.size() + 1; i++) {
                 insertModeleStmt.setDouble(i, (double) t.get(i - 1));
-                i++;
-                insertModeleStmt.setDouble(i, (double) t.get(i - 1));
-                i++;
-                insertModeleStmt.setDouble(i, (double) t.get(i - 1));
-                i++;
-                insertModeleStmt.setInt(i, (int) t.get(i - 1));
-                i++;
-                insertModeleStmt.setInt(i, (int) t.get(i - 1));
             }
-            insertModeleStmt.setInt(151, geste);
+            insertModeleStmt.setInt(93, geste);
             insertModeleStmt.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ProjetGantAnalyse.class.getName()).log(Level.SEVERE, null, ex);
