@@ -403,12 +403,33 @@ public class NewGesteDialog extends javax.swing.JDialog implements ArduinoReader
 
     private boolean sendAcquisition() {
         ArrayList<Double[]> mesuresDoubles = new ArrayList();
+        int flex1Sum = 0;
+        int flex2Sum = 0;
+        int flex1, flex2;
+        
+        for (Mesure m : currentAcquisitonValues) {
+            flex1Sum += m.flex1;
+            flex2Sum += m.flex2;
+        }
+        
+        if (flex1Sum <= 3) {
+            flex1 = 0;
+        } else {
+            flex1 = 1;
+        }
+        
+        if (flex2Sum <= 3) {
+            flex2 = 0;
+        } else {
+            flex2 = 1;
+        }
+        
         for (Mesure m : this.currentAcquisitonValues) {
             mesuresDoubles.add(new Double[]{(double) m.x,
                 (double) m.y,
                 (double) m.z,
-                (double) m.flex1,
-                (double) m.flex2}
+                (double) flex1,
+                (double) flex2}
             );
         }
 

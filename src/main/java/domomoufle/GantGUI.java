@@ -44,6 +44,7 @@ public class GantGUI {
         reader.startReading();
     }
 
+    
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
