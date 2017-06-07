@@ -164,7 +164,7 @@
                           <Component id="deleteGesteButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPanel3" pref="137" max="32767" attributes="0"/>
+                      <Component id="jPanel3" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -217,7 +217,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="comboBoxActions" max="32767" attributes="0"/>
-                                      <Component id="comboBoxModeles" pref="597" max="32767" attributes="0"/>
+                                      <Component id="comboBoxModeles" pref="616" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -291,7 +291,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Modele : "/>
+                    <Property name="text" type="java.lang.String" value="Geste : "/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -303,7 +303,7 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="Vue des modeles"/>
+                    <TitledBorder title="Vue des gestes"/>
                   </Border>
                 </Property>
               </Properties>

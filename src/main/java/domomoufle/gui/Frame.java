@@ -176,7 +176,7 @@ public class Frame extends javax.swing.JFrame {
 
         comboBoxModeles.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel2.setText("Modele : ");
+        jLabel2.setText("Geste : ");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -195,7 +195,7 @@ public class Frame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(comboBoxActions, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(comboBoxModeles, 0, 597, Short.MAX_VALUE))))
+                            .addComponent(comboBoxModeles, 0, 616, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -215,7 +215,7 @@ public class Frame extends javax.swing.JFrame {
         );
 
         panelTableModeles.setBackground(new java.awt.Color(255, 255, 255));
-        panelTableModeles.setBorder(javax.swing.BorderFactory.createTitledBorder("Vue des modeles"));
+        panelTableModeles.setBorder(javax.swing.BorderFactory.createTitledBorder("Vue des gestes"));
 
         scrollPaneModeles.setBackground(new java.awt.Color(255, 255, 255));
         scrollPaneModeles.setBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Button.light")));
@@ -269,7 +269,7 @@ public class Frame extends javax.swing.JFrame {
                     .addComponent(newGesteButton)
                     .addComponent(deleteGesteButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 137, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
