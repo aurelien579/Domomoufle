@@ -230,10 +230,10 @@ public class ProjetGantAnalyse {
     public static void writeTuple(ArrayList tuple) {
         try {
             PrintWriter w = new PrintWriter(new OutputStreamWriter(new FileOutputStream("output.csv")));
-            String s = "";
+            String s = ((int)tuple.get(0)==1 ? "true" : "false")+";"+((int)tuple.get(1)==1 ? "true" : "false")+";";
             w.write(getHeaderTuple());
 
-            for (int i = 0; i < tuple.size(); i++) {
+            for (int i = 2; i < tuple.size(); i++) {
                 s += tuple.get(i) + ";";
             }
             s += "0";
@@ -257,15 +257,13 @@ public class ProjetGantAnalyse {
     }
 
     public static String getHeaderTuple() {
-        String s = "";
+        String s = "flex1;flex2;";
         for (int i = 1; i < 31; i++) {
             s += "x" + i + ";";
             s += "y" + i + ";";
             s += "z" + i + ";";
-            s += "flex1" + i + ";";
-            s += "flex2" + i + ";";
         }
-        s += "idGeste\n";
+        s += "idGeste2\n";
         return s;
     }
 
